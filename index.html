@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>+365</title>
+<link rel="shortcut icon" href="./images/cuore.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    background: linear-gradient(135deg, #0d0d0d, #1a1a1a, #0d0d0d);
+    color: white;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+  a{
+    text-decoration: none;
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 18vw;
+    color: transparent;
+    background: url('./images/bacioPasqua.jpg') no-repeat center center;
+    background-size: 99% auto;
+    background-position: center center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(0,0,0,0.2);
+    animation: pulse 2s infinite;
+    margin: 0;
+    line-height: 1;
+    z-index: 2;
+    cursor: pointer; /* così capisci che è cliccabile */
+    text-decoration: none; /* no sottolineatura */
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  /* CUORI CADENTI */
+  .heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: red;
+    transform: rotate(45deg);
+    border-radius: 5px;
+    animation: fall 5s linear infinite;
+    z-index: 1;
+  }
+
+  .heart::before,
+  .heart::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 50%;
+  }
+
+  .heart::before { top: -10px; left: 0; }
+  .heart::after { top: 0; left: -10px; }
+
+  @keyframes fall {
+    0% { transform: translateY(-100px) rotate(45deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
+  }
+
+  /* GLITTER */
+  .glitter {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 10px white, 0 0 15px pink;
+    animation: sparkle 2s infinite alternate;
+    z-index: 1;
+  }
+
+  @keyframes sparkle {
+    0% { transform: translate(0,0) scale(0.8); opacity: 0.6; }
+    100% { transform: translate(10px,-10px) scale(1.2); opacity: 1; }
+  }
+
+/* CANDELE */
+.candle {
+  position: absolute;
+  bottom: 20px;
+  width: 60px;
+  height: 180px;
+  background: #fff5e6;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255,200,150,0.6);
+}
+
+/* Fiamma */
+.candle::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(255,220,0,1) 0%, rgba(255,140,0,0.9) 60%, transparent 100%);
+  border-radius: 50%;
+  animation: flicker 0.4s infinite alternate;
+}
+
+@keyframes flicker {
+  from { transform: translateX(-50%) scale(1); opacity: 0.9; }
+  to   { transform: translateX(-50%) scale(1.2); opacity: 0.6; }
+}
+
+.candle.left { left: 10%; }
+.candle.right { right: 10%; }
+
+</style>
+</head>
+<body>
+
+<!-- LINK al +365 -->
+<a href="intro.html">
+  <h1>+365</h1>
+</a>
+
+<!-- CANDELE -->
+<div class="candle left"></div>
+<div class="candle right"></div>
+
+<script>
+  // Cuori cadenti
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.animationDuration = 3 + Math.random() * 3 + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }
+  setInterval(createHeart, 300);
+
+  // Glitter
+  function createGlitter() {
+    const glitter = document.createElement('div');
+    glitter.classList.add('glitter');
+    glitter.style.left = window.innerWidth/2 + Math.random()*200 - 100 + 'px';
+    glitter.style.top = window.innerHeight/2 + Math.random()*200 - 100 + 'px';
+    document.body.appendChild(glitter);
+    setTimeout(() => glitter.remove(), 3000);
+  }
+  setInterval(createGlitter, 150);
+</script>
+
+</body>
+</html>

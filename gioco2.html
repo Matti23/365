@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Labirinto Segreto</title>
+<link rel="shortcut icon" href="./images/cuore.png" type="image/x-icon">
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #0d0d0d, #1a1a1a, #0d0d0d);
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    color: #fff;
+  }
+
+  /* --- ANIMAZIONE DI ENTRATA --- */
+  body {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+  }
+
+  body.loaded {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  h1 {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 2em;
+    text-shadow: 0 0 10px #ff3366, 0 0 20px #ffcc00;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1.1em;
+    color: #eee;
+  }
+
+  #gioco-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  #labirinto {
+    display: grid;
+    grid-template-columns: repeat(16, 45px);
+    grid-template-rows: repeat(16, 45px);
+    gap: 3px;
+    background: #111;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    animation: glow 2s infinite alternate;
+  }
+
+  @keyframes glow {
+    from { box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+    to { box-shadow: 0 0 35px rgba(255,255,255,0.4); }
+  }
+
+  .cella {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .cella:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+  }
+
+  .muro { 
+    background: linear-gradient(135deg, #006699, #0099cc);
+    box-shadow: inset 0 0 5px #00ccff;
+  }
+
+  .giocatore { 
+    background: radial-gradient(circle, #ff3366, #ff6699);
+    animation: pulse 1s infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { box-shadow: 0 0 10px #ff3366; }
+    to { box-shadow: 0 0 20px #ff99aa; }
+  }
+
+  .arrivo-bloccata { 
+    background: #555;
+    color: #222;
+    font-weight: bold;
+  }
+
+  .arrivo-sbloccata { 
+    background: radial-gradient(circle, #ffcc00, #ffaa00);
+    animation: shine 1s infinite alternate;
+    font-weight: bold;
+  }
+
+  @keyframes shine {
+    from { box-shadow: 0 0 10px #ffcc00; }
+    to { box-shadow: 0 0 25px #ffff66; }
+  }
+
+  .oggetto { 
+    background: linear-gradient(135deg, #8bc34a, #4caf50);
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    box-shadow: 0 0 10px #8bc34a;
+    animation: bounce 1s infinite alternate;
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
+  }
+
+  #oggetti-rimasti {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 10px;
+    text-shadow: 0 0 5px #fff;
+  }
+
+  .colonna-indizi {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .indizio {
+    background: linear-gradient(135deg, #ffe4b5, #ffdd99);
+    border: 2px solid #ff9800;
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .indizio:hover {
+    transform: scale(1.05) rotate(-1deg);
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
+  }
+
+  /* CANDELE */
+  .candle {
+    position: absolute;
+    bottom: 20px;
+    width: 50px;
+    height: 150px;
+    background: #fff5e6;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(255,200,150,0.8);
+  }
+  .candle::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 30px;
+    background: radial-gradient(circle, rgba(255,220,0,1) 0%, rgba(255,140,0,0.9) 60%, transparent 100%);
+    border-radius: 50%;
+    animation: flicker 0.4s infinite alternate;
+  }
+  .candle.left { left: 5%; }
+  .candle.right { right: 5%; }
+
+  @keyframes flicker {
+    from { opacity: 0.9; transform: translateX(-50%) scaleY(1); }
+    to { opacity: 1; transform: translateX(-50%) scaleY(1.1); }
+  }
+</style>
+</head>
+<body>
+<div class="candle left"></div>
+<div class="candle right"></div>
+
+<h1>Labirinto Segreto</h1>
+<p>Raccogli tutti gli oggetti e raggiungi il traguardo! Usa le frecce della tastiera.</p>
+<p id="oggetti-rimasti">Oggetti rimasti: 12</p>
+
+<div id="gioco-container">
+  <div id="indizi-sinistra" class="colonna-indizi"></div>
+  <div id="labirinto"></div>
+  <div id="indizi-destra" class="colonna-indizi"></div>
+</div>
+
+<script>
+// CODICE LABIRINTO RIMANE UGUALE
+// 0 = strada, 1 = muro, 2 = giocatore, 3 = arrivo, 4 = oggetto
+const lab = [
+  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+  [1,2,0,0,1,0,0,0,1,4,0,0,0,1,4,1],
+  [1,0,1,0,1,4,1,0,1,1,1,0,0,0,0,1],
+  [1,0,0,0,1,1,0,0,0,0,0,0,1,0,1,1],
+  [1,0,1,1,4,1,0,1,0,1,0,1,0,1,0,1],
+  [1,0,0,0,0,1,0,0,0,1,0,4,0,0,0,1],
+  [1,0,1,1,0,1,4,1,0,1,0,1,0,1,0,1],
+  [1,0,0,1,1,0,0,1,0,4,0,1,0,0,4,1],
+  [1,0,0,0,1,1,0,1,0,0,0,1,0,0,0,1],
+  [1,0,0,1,0,1,0,0,0,1,0,0,4,1,0,1],
+  [1,0,1,0,0,0,0,1,0,0,0,1,1,0,0,1],
+  [1,4,0,0,0,1,4,0,0,0,1,0,0,1,0,1],
+  [1,0,1,0,0,1,1,1,0,1,0,1,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
+  [1,0,0,1,0,0,1,0,0,1,0,0,0,0,4,1],
+  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1]
+];
+
+let giocatore = {x:1, y:1};
+let oggettiRimasti = 12;
+
+// Emoji legati a Barcellona e Capodanno (12)
+const emojiOggetti = ['🏰','⛪','🌊','🎨','🏟️','🌳','🗽','🏛️','🕰️','🎆','💃','🥂'];
+
+// Indizi più carini e specifici associati alle emoji (12)
+const indizi = [
+  "Tra colori e mosaici, le curve danzano sotto il sole…", 
+  "Un gigante di pietra si staglia verso il cielo, custode di sogni…", 
+  "Il suono delle onde ti accompagnerà in passeggiate senza fine…", 
+  "Quadri e segreti nascosti tra vicoli silenziosi…", 
+  "Dove l’adrenalina scorre e il cuore batte forte insieme ai cori…", 
+  "Tra sentieri verdi e fiori profumati, il respiro diventa leggero…", 
+  "Da qui puoi abbracciare tutta la città con lo sguardo…", 
+  "Strade antiche dove le note di musica si nascondono tra le pietre…", 
+  "Il tempo scorre tra fontane e piazze, custodendo momenti preziosi…", 
+  "Il cielo esplode di luci e colori in una notte speciale…", 
+  "Ritmi e passi ti trasportano, lasciandoti trasalire dal divertimento…", 
+  "Un brindisi tra luci scintillanti per salutare il nuovo anno…"
+];
+
+let labEmoji = [];
+let index = 0;
+for(let y=0; y<16; y++){
+  labEmoji[y] = [];
+  for(let x=0; x<16; x++){
+    labEmoji[y][x] = lab[y][x] === 4 ? emojiOggetti[index++] : '';
+  }
+}
+
+const labirinto = document.getElementById("labirinto");
+const oggettiText = document.getElementById("oggetti-rimasti");
+const divSinistra = document.getElementById("indizi-sinistra");
+const divDestra = document.getElementById("indizi-destra");
+
+function disegnaLabirinto(){
+  labirinto.innerHTML = '';
+  for(let y=0; y<16; y++){
+    for(let x=0; x<16; x++){
+      const div = document.createElement('div');
+      div.classList.add('cella');
+      if(lab[y][x] === 1) div.classList.add('muro');
+      if(lab[y][x] === 2) div.classList.add('giocatore');
+      if(lab[y][x] === 3){
+        div.classList.add(oggettiRimasti === 0 ? 'arrivo-sbloccata' : 'arrivo-bloccata');
+        div.innerText = oggettiRimasti === 0 ? '🏁' : '🔒';
+      }
+      if(lab[y][x] === 4){
+        div.classList.add('oggetto');
+        div.innerText = labEmoji[y][x];
+      }
+      labirinto.appendChild(div);
+    }
+  }
+}
+
+document.addEventListener('keydown', (e)=>{
+  let nx = giocatore.x;
+  let ny = giocatore.y;
+  if(e.key === 'ArrowUp') ny--;
+  if(e.key === 'ArrowDown') ny++;
+  if(e.key === 'ArrowLeft') nx--;
+  if(e.key === 'ArrowRight') nx++;
+
+  if(nx < 0 || nx >= 16 || ny < 0 || ny >= 16) return;
+  if(lab[ny][nx] === 1 || (lab[ny][nx] === 3 && oggettiRimasti > 0)) return;
+
+  if(lab[ny][nx] === 4){
+    oggettiRimasti--;
+    const div = document.createElement('div');
+    div.classList.add('indizio');
+    div.innerText = indizi.shift();
+    if(12 - oggettiRimasti <= 6) divSinistra.appendChild(div);
+    else divDestra.appendChild(div);
+    lab[ny][nx] = 0;
+    labEmoji[ny][nx] = '';
+    oggettiText.innerText = "Oggetti rimasti: " + oggettiRimasti;
+  }
+
+  if(lab[ny][nx] === 0){
+    lab[giocatore.y][giocatore.x] = 0;
+    giocatore.x = nx;
+    giocatore.y = ny;
+    lab[ny][nx] = 2;
+  }
+
+  if(lab[ny][nx] === 3 && oggettiRimasti === 0){
+    window.location.href = "finale.html";
+    return;
+  }
+
+  disegnaLabirinto();
+});
+
+disegnaLabirinto();
+
+// --- Quando la pagina ha caricato, attiva animazione ---
+window.onload = () => {
+  document.body.classList.add("loaded");
+};
+</script>
+</body>
+</html>

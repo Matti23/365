@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Primo Anniversario</title>
+  <link rel="shortcut icon" href="./images/cuore.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a, #0d0d0d);
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .text-section .phrase {
+      font-size: 1.8rem;
+      font-family: 'Playfair Display', serif;
+      opacity: 0;
+      animation: fadeInUp 2.5s forwards;
+      margin: 20px 0;
+      letter-spacing: 1px;
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Pulsante migliorato */
+    .btn-next {
+      margin-top: 40px;
+      padding: 18px 40px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(45deg, #ff4e88, #ffaf40, #ffd700);
+      background-size: 300% 300%;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(255, 180, 150, 0.8);
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: gradientMove 5s infinite, pulse 2s infinite;
+    }
+
+    .btn-next:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 40px rgba(255, 200, 170, 1);
+    }
+
+    /* Animazione gradiente */
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Effetto battito (pulse) */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+      100% { transform: scale(1); }
+    }
+
+    /* CANDELE */
+    .candle {
+      position: absolute;
+      bottom: 20px;
+      width: 60px;
+      height: 180px;
+      background: #fff5e6;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,200,150,0.6);
+    }
+
+    /* Fiamma */
+    .candle::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 40px;
+      background: radial-gradient(circle, rgba(255,220,0,1) 0%, rgba(255,140,0,0.9) 60%, transparent 100%);
+      border-radius: 50%;
+      animation: flicker 0.4s infinite alternate;
+    }
+
+    @keyframes flicker {
+      from { transform: translateX(-50%) scale(1); opacity: 0.9; }
+      to   { transform: translateX(-50%) scale(1.2); opacity: 0.6; }
+    }
+
+    .candle.left { left: 10%; }
+    .candle.right { right: 10%; }
+  </style>
+</head>
+
+<body>
+  <!-- Candele ai lati -->
+  <div class="candle left"></div>
+  <div class="candle right"></div>
+
+  <div class="container">
+    <div class="text-section">
+      <div class="phrase" style="animation-delay: 1s;">Un anno insieme, ogni giorno unico.</div>
+      <div class="phrase" style="animation-delay: 4s;">Abbiamo costruito ricordi preziosi.</div>
+      <div class="phrase" style="animation-delay: 7s;">Oggi voglio celebrare il nostro primo anniversario.</div>
+      <div class="phrase" style="animation-delay: 10s;">Ho una sorpresa per te</div>
+    </div>
+
+    <!-- pulsante nascosto inizialmente -->
+    <a href="gioco1.html"><button class="btn-next" id="btnNext">💝 Scopri cosa ti aspetta 💝</button></a>
+  </div>
+
+  <script>
+    // Mostra il bottone dopo 13 secondi
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const btn = document.getElementById('btnNext');
+        if(btn){
+          btn.style.opacity = 1;
+        }
+      }, 13000);
+    });
+  </script>
+</body>
+</html>
