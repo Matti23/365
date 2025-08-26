@@ -6,10 +6,10 @@
     <link rel="shortcut icon" href="./images/cuore.png" type="image/x-icon" />
     <style>
       #fine1 {
-          opacity: 0;
-          animation: fadeIn 1s forwards;
-          animation-delay: 0.5s;
-        }
+        opacity: 0;
+        animation: fadeIn 1s forwards;
+        animation-delay: 0.5s;
+      }
       body {
         font-family: "Arial", sans-serif;
         text-align: center;
@@ -24,6 +24,8 @@
         color: white;
         opacity: 0;
         animation: fadeIn 1s forwards;
+        position: relative;
+        overflow: hidden;
       }
       h1 {
         font-size: 40px;
@@ -66,7 +68,8 @@
       .hidden {
         display: none;
       }
-      /* CANDELE */
+
+      /* --- CANDELE --- */
       .candle {
         position: absolute;
         bottom: 20px;
@@ -110,28 +113,78 @@
         }
       }
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+        from { opacity: 0; }
+        to { opacity: 1; }
       }
-      .candle.left {
-        left: 10%;
+      .candle.left { left: 10%; }
+      .candle.right { right: 10%; }
+
+      /* --- FILO DI LUCI ROMANTICHE --- */
+      .string {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        z-index: 3;
       }
-      .candle.right {
-        right: 10%;
+      .string.top {
+        top: 0;
+        left: 0;
+        width: 100%;
+        justify-content: space-around;
+        border-top: 2px solid #444;
+      }
+      .string.left, .string.right {
+        top: 0;
+        height: 100%;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+      .string.left { left: 0; }
+      .string.right { right: 0; }
+
+      .bulb {
+        width: 18px;
+        height: 30px;
+        background: radial-gradient(ellipse at top, #fff 0%, currentColor 80%);
+        border-radius: 50% 50% 40% 40%;
+        margin: 5px;
+        box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+        animation: glow 2s infinite alternate;
+      }
+      .bulb:nth-child(1n) { color: #ffb6c1; } 
+      .bulb:nth-child(2n) { color: #ffd1a9; } 
+      .bulb:nth-child(3n) { color: #dda0dd; } 
+      .bulb:nth-child(4n) { color: #ffe4b5; } 
+      .bulb:nth-child(5n) { color: #ff6f91; } 
+      @keyframes glow {
+        from { opacity: 0.7; transform: scale(0.9); }
+        to   { opacity: 1; transform: scale(1.1); }
       }
 
       /* Effetto fade out/in per le domande */
-      .fade {
-        opacity: 0 !important;
-      }
+      .fade { opacity: 0 !important; }
+
     </style>
   </head>
   <body>
-    <!-- CANDELE -->
+    <!-- Lucine -->
+    <div class="string top">
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    </div>
+
+    <div class="string left">
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    </div>
+
+    <div class="string right">
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    </div>
+
+    <!-- Candele -->
     <div class="candle left"></div>
     <div class="candle right"></div>
 
@@ -154,75 +207,30 @@
 
     <script>
       const indizi1 = [
-        {
-          domanda:
-            "Indizio 1: Qual è la data in cui ci siamo messi insieme? (Formato gg/mm)",
-          risposta: "02/09",
-        },
-        {
-          domanda: "Indizio 2: Dove ci siamo dati il nostro primo bacio?",
-          risposta: "mare",
-        },
-        {
-          domanda: "Indizio 3: Qual è il soprannome affettuoso che ci diamo?",
-          risposta: true, // qualsiasi risposta valida
-        },
-        {
-          domanda:
-            "Indizio 4: Qual è la nostra canzone preferita insieme ultimamente?",
-          risposta: "peter pan",
-        },
+        { domanda: "Indizio 1: Qual è la data in cui ci siamo messi insieme? (Formato gg/mm)", risposta: "02/09" },
+        { domanda: "Indizio 2: Dove ci siamo dati il nostro primo bacio?", risposta: "mare" },
+        { domanda: "Indizio 3: Qual è il soprannome affettuoso che ci diamo?", risposta: true },
+        { domanda: "Indizio 4: Qual è la nostra canzone preferita insieme ultimamente?", risposta: "peter pan" },
         { domanda: "Indizio 5: Qual è il nostro cuore?", risposta: "💘" },
-        {
-          domanda: "Indizio 6: Chi ha fatto la prima mossa?",
-          risposta: "Mattia",
-        },
+        { domanda: "Indizio 6: Chi ha fatto la prima mossa?", risposta: "Mattia" },
         { domanda: "Indizio 7: Chi è più permaloso?", risposta: "Mattia" },
-        {
-          domanda: "Indizio 8: Chi impiega più tempo a prepararsi?",
-          risposta: "Martina",
-        },
-        {
-          domanda: "Indizio 9: Chi ha detto “ti amo” per primo?",
-          risposta: "Mattia",
-        },
-        {
-          domanda: "Indizio 10: Chi ha il peggior gusto in fatto di film?",
-          risposta: true, // qualsiasi risposta valida
-        },
-        {
-          domanda:
-            "Indizio 11: Qual è il luogo in cui ci siamo sentiti più felici insieme?",
-          risposta: "baia verde",
-        },
-        {
-          domanda:
-            "Indizio 12: Se potessi descrivere la vostra relazione in una parola, quale sarebbe?",
-          risposta: true, // qualsiasi risposta valida
-        },
+        { domanda: "Indizio 8: Chi impiega più tempo a prepararsi?", risposta: "Martina" },
+        { domanda: "Indizio 9: Chi ha detto “ti amo” per primo?", risposta: "Mattia" },
+        { domanda: "Indizio 10: Chi ha il peggior gusto in fatto di film?", risposta: true },
+        { domanda: "Indizio 11: Qual è il luogo in cui ci siamo sentiti più felici insieme?", risposta: "baia verde" },
+        { domanda: "Indizio 12: Se potessi descrivere la vostra relazione in una parola, quale sarebbe?", risposta: true },
       ];
 
       let step1 = 0;
 
       function controlla() {
-        const input = document
-          .getElementById("risposta")
-          .value.toLowerCase()
-          .trim();
-
+        const input = document.getElementById("risposta").value.toLowerCase().trim();
         const rispostaAttesa = indizi1[step1].risposta;
-
-        if (
-          rispostaAttesa === true || // se qualsiasi risposta è accettata
-          input === rispostaAttesa.toLowerCase()
-        ) {
+        if (rispostaAttesa === true || input === rispostaAttesa.toLowerCase()) {
           step1++;
           if (step1 < indizi1.length) {
             const testo = document.getElementById("testo-indizio");
-
-            // fade out
             testo.classList.add("fade");
-
             setTimeout(() => {
               testo.innerText = indizi1[step1].domanda;
               document.getElementById("risposta").value = "";

@@ -18,6 +18,7 @@
       font-family: 'Poppins', sans-serif;
       overflow: hidden;
       color: #fff;
+      position: relative;
     }
 
     .container {
@@ -41,7 +42,6 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* Pulsante migliorato */
     .btn-next {
       margin-top: 40px;
       padding: 18px 40px;
@@ -64,21 +64,19 @@
       box-shadow: 0 0 40px rgba(255, 200, 170, 1);
     }
 
-    /* Animazione gradiente */
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
-    /* Effetto battito (pulse) */
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.07); }
       100% { transform: scale(1); }
     }
 
-    /* CANDELE */
+    /* --- CANDELE --- */
     .candle {
       position: absolute;
       bottom: 20px;
@@ -89,7 +87,6 @@
       box-shadow: 0 0 20px rgba(255,200,150,0.6);
     }
 
-    /* Fiamma */
     .candle::before {
       content: '';
       position: absolute;
@@ -110,11 +107,74 @@
 
     .candle.left { left: 10%; }
     .candle.right { right: 10%; }
+
+    /* --- FILO DI LUCI ROMANTICHE --- */
+    .string {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      z-index: 3;
+    }
+    .string.top {
+      top: 0;
+      left: 0;
+      width: 100%;
+      justify-content: space-around;
+      border-top: 2px solid #444;
+    }
+    .string.left, .string.right {
+      top: 0;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .string.left { left: 0; }
+    .string.right { right: 0; }
+
+    .bulb {
+      width: 18px;
+      height: 30px;
+      background: radial-gradient(ellipse at top, #fff 0%, currentColor 80%);
+      border-radius: 50% 50% 40% 40%;
+      margin: 5px;
+      box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+      animation: glow 2s infinite alternate;
+    }
+
+    /* Palette romantica */
+    .bulb:nth-child(1n) { color: #ffb6c1; } 
+    .bulb:nth-child(2n) { color: #ffd1a9; } 
+    .bulb:nth-child(3n) { color: #dda0dd; } 
+    .bulb:nth-child(4n) { color: #ffe4b5; } 
+    .bulb:nth-child(5n) { color: #ff6f91; } 
+
+    @keyframes glow {
+      from { opacity: 0.7; transform: scale(0.9); }
+      to   { opacity: 1; transform: scale(1.1); }
+    }
+
   </style>
 </head>
 
 <body>
-  <!-- Candele ai lati -->
+  <!-- Lucine -->
+  <div class="string top">
+    <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+  </div>
+
+  <div class="string left">
+    <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+  </div>
+
+  <div class="string right">
+    <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+  </div>
+
+  <!-- Candele -->
   <div class="candle left"></div>
   <div class="candle right"></div>
 
@@ -126,12 +186,10 @@
       <div class="phrase" style="animation-delay: 10s;">Ho una sorpresa per te</div>
     </div>
 
-    <!-- pulsante nascosto inizialmente -->
     <a href="gioco1.html"><button class="btn-next" id="btnNext">💝 Scopri cosa ti aspetta 💝</button></a>
   </div>
 
   <script>
-    // Mostra il bottone dopo 13 secondi
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         const btn = document.getElementById('btnNext');
