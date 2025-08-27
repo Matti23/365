@@ -90,23 +90,31 @@ canvas {
 <canvas id="fireworks"></canvas>
 
 <script>
-/* ===== AUDIO ===== */
+/* ===== AUDIO CON FADE-IN ===== */
 const audio = document.getElementById('audio');
 
-// Prova autoplay all'avvio
 window.addEventListener("load", () => {
-  audio.play().catch(() => {
-    console.log("Autoplay bloccato, attendendo click.");
+  audio.volume = 0; // parte silenzioso
+  audio.play().then(() => {
+    // fade-in graduale fino al volume massimo
+    let vol = 0;
+    const fadeIn = setInterval(() => {
+      if(vol < 1){
+        vol += 0.05;
+        audio.volume = Math.min(vol,1);
+      } else {
+        clearInterval(fadeIn);
+      }
+    }, 100);
+  }).catch(() => {
+    console.log("Autoplay bloccato, attendendo click dell'utente.");
+    // fallback click
+    document.body.addEventListener("click", () => {
+      if(audio.paused){
+        audio.play().then(() => { audio.volume = 1; });
+      }
+    }, { once: true });
   });
-});
-
-// Se autoplay fallisce → click in qualsiasi parte della pagina
-document.body.addEventListener("click", () => {
-  if (audio.paused) {
-    audio.play().catch(() => {
-      console.log("Errore nel far partire l'audio.");
-    });
-  }
 });
 
 /* ===== FUOCHI D'ARTIFICIO ===== */
