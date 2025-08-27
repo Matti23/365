@@ -15,7 +15,6 @@
     color: #fff;
   }
 
-  /* --- ANIMAZIONE DI ENTRATA --- */
   body {
     opacity: 0;
     transform: translateY(-20px);
@@ -203,7 +202,6 @@
 </div>
 
 <script>
-// CODICE LABIRINTO RIMANE UGUALE
 // 0 = strada, 1 = muro, 2 = giocatore, 3 = arrivo, 4 = oggetto
 const lab = [
   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -227,25 +225,24 @@ const lab = [
 let giocatore = {x:1, y:1};
 let oggettiRimasti = 12;
 
-// Emoji legati a Barcellona e Capodanno (12)
+// Emoji e indizi abbinati
 const emojiOggetti = ['🏰','⛪','🌊','🎨','🏟️','🌳','🗽','🏛️','🕰️','🎆','💃','🥂'];
+const mappaIndizi = {
+  '🏰': "Tra torri dalle forme strane e colori vivaci, camminare insieme è un sogno… 🏰",
+  '⛪': "Una maestosa struttura vi osserva silenziosa, custode di emozioni segrete… ⛪",
+  '🌊': "Passeggiate lungo la riva, il suono delle onde accompagna i vostri sguardi… 🌊",
+  '🎨': "Vicoli stretti e pieni di arte, ogni angolo sussurra storie da scoprire insieme… 🎨",
+  '🏟️': "Tra applausi e urla di gioia, sentite il cuore battere all’unisono… 🏟️",
+  '🌳': "Giardini nascosti tra alberi e fiori, un rifugio dove tutto sembra possibile… 🌳",
+  '🗽': "Dall’alto di una collina, la città vi avvolge in un abbraccio infinito… 🗽",
+  '🏛️': "Strade e piazze antiche dove ogni passo diventa un ricordo condiviso… 🏛️",
+  '🕰️': "Il tempo sembra fermarsi tra lampioni e risate, mentre camminate mano nella mano… 🕰️",
+  '🎆': "Il cielo esplode in luci e colori, e i vostri occhi brillano più delle stelle… 🎆",
+  '💃': "Tra ritmi caldi e passi di danza, vi lasciate trasportare dalla gioia… 💃",
+  '🥂': "Brindisi sotto le luci della notte, un nuovo anno che inizia con voi… 🥂"
+};
 
-// Indizi più carini e specifici associati alle emoji (12)
-const indizi = [
-  "Tra colori e mosaici, le curve danzano sotto il sole…", 
-  "Un gigante di pietra si staglia verso il cielo, custode di sogni…", 
-  "Il suono delle onde ti accompagnerà in passeggiate senza fine…", 
-  "Quadri e segreti nascosti tra vicoli silenziosi…", 
-  "Dove l’adrenalina scorre e il cuore batte forte insieme ai cori…", 
-  "Tra sentieri verdi e fiori profumati, il respiro diventa leggero…", 
-  "Da qui puoi abbracciare tutta la città con lo sguardo…", 
-  "Strade antiche dove le note di musica si nascondono tra le pietre…", 
-  "Il tempo scorre tra fontane e piazze, custodendo momenti preziosi…", 
-  "Il cielo esplode di luci e colori in una notte speciale…", 
-  "Ritmi e passi ti trasportano, lasciandoti trasalire dal divertimento…", 
-  "Un brindisi tra luci scintillanti per salutare il nuovo anno…"
-];
-
+// Genera labirinto emoji
 let labEmoji = [];
 let index = 0;
 for(let y=0; y<16; y++){
@@ -293,10 +290,11 @@ document.addEventListener('keydown', (e)=>{
   if(lab[ny][nx] === 1 || (lab[ny][nx] === 3 && oggettiRimasti > 0)) return;
 
   if(lab[ny][nx] === 4){
+    const emoji = labEmoji[ny][nx];
     oggettiRimasti--;
     const div = document.createElement('div');
     div.classList.add('indizio');
-    div.innerText = indizi.shift();
+    div.innerText = mappaIndizi[emoji];
     if(12 - oggettiRimasti <= 6) divSinistra.appendChild(div);
     else divDestra.appendChild(div);
     lab[ny][nx] = 0;

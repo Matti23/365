@@ -23,7 +23,7 @@ body {
 }
 
 h1 {
-  font-size: 10vw; /* testo gigante */
+  font-size: 10vw;
   line-height: 1.2em;
   background: url('images/barcellona.jpg') no-repeat center/cover;
   -webkit-background-clip: text;
@@ -38,14 +38,14 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(18px, 3vw, 36px); /* sempre leggibile */
+  font-size: clamp(18px, 3vw, 36px);
   color: #fff;
   text-shadow: 0 0 15px rgba(0,0,0,0.7);
   margin-top: 20px;
   opacity: 0;
   transform: translateY(20px);
   animation: subtitleAppear 1s forwards;
-  animation-delay: 2s; /* appare dopo la scritta grande */
+  animation-delay: 2s;
   z-index: 3;
 }
 
@@ -70,7 +70,7 @@ canvas {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1; /* fuochi dietro il testo */
+  z-index: 1;
 }
 
 @keyframes gradientBG {
@@ -81,11 +81,34 @@ canvas {
 </style>
 </head>
 <body>
+
+<!-- Audio -->
+<audio id="audio" src="./images/Fermata_Canzone.mp3" loop></audio>
+
 <h1>TI PORTO A BARCELLONA!</h1>
 <h2>Un Capodanno insieme che ricorderemo per sempre</h2>
 <canvas id="fireworks"></canvas>
 
 <script>
+/* ===== AUDIO ===== */
+const audio = document.getElementById('audio');
+
+// Prova autoplay all'avvio
+window.addEventListener("load", () => {
+  audio.play().catch(() => {
+    console.log("Autoplay bloccato, attendendo click.");
+  });
+});
+
+// Se autoplay fallisce → click in qualsiasi parte della pagina
+document.body.addEventListener("click", () => {
+  if (audio.paused) {
+    audio.play().catch(() => {
+      console.log("Errore nel far partire l'audio.");
+    });
+  }
+});
+
 /* ===== FUOCHI D'ARTIFICIO ===== */
 const canvas = document.getElementById('fireworks');
 const ctx = canvas.getContext('2d');
@@ -158,16 +181,21 @@ function animate(){
     fireworks.push(new Firework(Math.random()*canvas.width, targetY));
   }
   fireworks.forEach(f => { f.update(); f.draw(); });
-  particles.forEach((p,i)=>{ p.update(); p.draw(); if(p.alpha<=0) particles.splice(i,1); });
+  particles.forEach((p,i)=>{ 
+    p.update(); 
+    p.draw(); 
+    if(p.alpha<=0) particles.splice(i,1); 
+  });
   requestAnimationFrame(animate);
 }
 
 animate();
 
-window.addEventListener('resize', ()=>{
+window.addEventListener('resize', ()=> {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
 </script>
+
 </body>
 </html>

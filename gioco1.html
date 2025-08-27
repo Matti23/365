@@ -5,11 +5,13 @@
     <title>Gioco d'amore 1 ❤️</title>
     <link rel="shortcut icon" href="./images/cuore.png" type="image/x-icon" />
     <style>
-      #fine1 {
-        opacity: 0;
-        animation: fadeIn 1s forwards;
-        animation-delay: 0.5s;
+      /* --- ANIMAZIONI GENERALI --- */
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
       }
+
+      /* --- BODY --- */
       body {
         font-family: "Arial", sans-serif;
         text-align: center;
@@ -27,6 +29,7 @@
         position: relative;
         overflow: hidden;
       }
+
       h1 {
         font-size: 40px;
         margin-bottom: 20px;
@@ -34,11 +37,13 @@
         animation: fadeIn 1s forwards;
         animation-delay: 0.5s;
       }
+
       p {
         font-size: 20px;
         opacity: 1;
         transition: opacity 0.8s ease;
       }
+
       input {
         padding: 10px;
         font-size: 16px;
@@ -49,6 +54,7 @@
         animation: fadeIn 1s forwards;
         animation-delay: 1.5s;
       }
+
       button {
         padding: 10px 20px;
         margin-top: 15px;
@@ -62,9 +68,11 @@
         animation: fadeIn 1s forwards;
         animation-delay: 2s;
       }
+
       button:hover {
         background: #ff6699;
       }
+
       .hidden {
         display: none;
       }
@@ -82,6 +90,7 @@
         animation: fadeIn 1s forwards;
         animation-delay: 2.5s;
       }
+
       .candle::before {
         content: "";
         position: absolute;
@@ -102,6 +111,7 @@
         animation: fadeIn 1s forwards;
         animation-delay: 3s;
       }
+
       @keyframes flicker {
         from {
           transform: translateX(-50%) scale(1);
@@ -112,10 +122,7 @@
           opacity: 0.6;
         }
       }
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
+
       .candle.left { left: 10%; }
       .candle.right { right: 10%; }
 
@@ -126,6 +133,7 @@
         align-items: center;
         z-index: 3;
       }
+
       .string.top {
         top: 0;
         left: 0;
@@ -133,12 +141,14 @@
         justify-content: space-around;
         border-top: 2px solid #444;
       }
+
       .string.left, .string.right {
         top: 0;
         height: 100%;
         flex-direction: column;
         justify-content: space-around;
       }
+
       .string.left { left: 0; }
       .string.right { right: 0; }
 
@@ -151,11 +161,13 @@
         box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
         animation: glow 2s infinite alternate;
       }
+
       .bulb:nth-child(1n) { color: #ffb6c1; } 
       .bulb:nth-child(2n) { color: #ffd1a9; } 
       .bulb:nth-child(3n) { color: #dda0dd; } 
       .bulb:nth-child(4n) { color: #ffe4b5; } 
       .bulb:nth-child(5n) { color: #ff6f91; } 
+
       @keyframes glow {
         from { opacity: 0.7; transform: scale(0.9); }
         to   { opacity: 1; transform: scale(1.1); }
@@ -163,6 +175,45 @@
 
       /* Effetto fade out/in per le domande */
       .fade { opacity: 0 !important; }
+
+      /* --- POPUP ROMANTICO GRANDE --- */
+      #popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #ffccd5, #ffe4e1);
+        padding: 40px 60px;
+        border-radius: 25px;
+        box-shadow: 0 0 30px rgba(255, 105, 180, 0.8);
+        text-align: center;
+        color: #800040;
+        font-size: 28px;
+        z-index: 10;
+        display: none;
+        animation: popupAppear 0.5s ease forwards;
+        max-width: 90%;
+      }
+
+      #popup button {
+        margin-top: 20px;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 15px;
+        background: #ff3366;
+        color: white;
+        font-size: 22px;
+        cursor: pointer;
+      }
+
+      #popup button:hover {
+        background: #ff6699;
+      }
+
+      @keyframes popupAppear {
+        from { opacity: 0; transform: translate(-50%, -60%); }
+        to { opacity: 1; transform: translate(-50%, -50%); }
+      }
 
     </style>
   </head>
@@ -192,9 +243,9 @@
 
     <div id="gioco1">
       <p id="testo-indizio">
-        Indizio 1: Qual è la data in cui ci siamo messi insieme? (Formato gg/mm)
+        Quesito 1: Qual è la data in cui ci siamo messi insieme? (Formato gg/mm)
       </p>
-      <input type="text" id="risposta" placeholder="Es: 14/02" />
+      <input type="text" id="risposta" />
       <br />
       <button onclick="controlla()">Conferma</button>
     </div>
@@ -205,20 +256,27 @@
       <a href="gioco2.html"><button>Vai al Secondo Gioco</button></a>
     </div>
 
+    <!-- POPUP GRANDE -->
+    <div id="popup">
+      💖 Ops, prova ancora! 😘
+      <br />
+      <button onclick="chiudiPopup()">Continua</button>
+    </div>
+
     <script>
       const indizi1 = [
-        { domanda: "Indizio 1: Qual è la data in cui ci siamo messi insieme? (Formato gg/mm)", risposta: "02/09" },
-        { domanda: "Indizio 2: Dove ci siamo dati il nostro primo bacio?", risposta: "mare" },
-        { domanda: "Indizio 3: Qual è il soprannome affettuoso che ci diamo?", risposta: true },
-        { domanda: "Indizio 4: Qual è la nostra canzone preferita insieme ultimamente?", risposta: "peter pan" },
-        { domanda: "Indizio 5: Qual è il nostro cuore?", risposta: "💘" },
-        { domanda: "Indizio 6: Chi ha fatto la prima mossa?", risposta: "Mattia" },
-        { domanda: "Indizio 7: Chi è più permaloso?", risposta: "Mattia" },
-        { domanda: "Indizio 8: Chi impiega più tempo a prepararsi?", risposta: "Martina" },
-        { domanda: "Indizio 9: Chi ha detto “ti amo” per primo?", risposta: "Mattia" },
-        { domanda: "Indizio 10: Chi ha il peggior gusto in fatto di film?", risposta: true },
-        { domanda: "Indizio 11: Qual è il luogo in cui ci siamo sentiti più felici insieme?", risposta: "baia verde" },
-        { domanda: "Indizio 12: Se potessi descrivere la vostra relazione in una parola, quale sarebbe?", risposta: true },
+        { domanda: "Quesito 1: Qual è la data in cui ci siamo messi insieme? (Formato gg/mm)", risposta: "02/09" },
+        { domanda: "Quesito 2: Dove ci siamo dati il nostro primo bacio?", risposta: "mare" },
+        { domanda: "Quesito 3: Qual è il soprannome affettuoso che ci diamo?", risposta: true },
+        { domanda: "Quesito 4: Qual è la nostra canzone preferita insieme ultimamente?", risposta: "peter pan" },
+        { domanda: "Quesito 5: Qual è il nostro cuore?", risposta: "💘" },
+        { domanda: "Quesito 6: Chi ha fatto la prima mossa?", risposta: "Mattia" },
+        { domanda: "Quesito 7: Chi è più permaloso?", risposta: "Mattia" },
+        { domanda: "Quesito 8: Chi impiega più tempo a prepararsi?", risposta: "Martina" },
+        { domanda: "Quesito 9: Chi ha detto “ti amo” per primo?", risposta: "Mattia" },
+        { domanda: "Quesito 10: Chi ha il peggior gusto in fatto di film?", risposta: true },
+        { domanda: "Quesito 11: Qual è il luogo in cui ci siamo sentiti più felici insieme?", risposta: "baia verde" },
+        { domanda: "Quesito 12: Se potessi descrivere la vostra relazione in una parola, quale sarebbe?", risposta: true },
       ];
 
       let step1 = 0;
@@ -241,8 +299,18 @@
             document.getElementById("fine1").classList.remove("hidden");
           }
         } else {
-          alert("Ops, prova ancora! 😘");
+          mostraPopup("💖 Ops, prova ancora! 😘");
         }
+      }
+
+      function mostraPopup(messaggio) {
+        const popup = document.getElementById("popup");
+        popup.innerHTML = messaggio + '<br /><button onclick="chiudiPopup()">Continua</button>';
+        popup.style.display = "block";
+      }
+
+      function chiudiPopup() {
+        document.getElementById("popup").style.display = "none";
       }
     </script>
   </body>
