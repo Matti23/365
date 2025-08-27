@@ -55,7 +55,6 @@
     gap: 2px;
     max-width: 90vw;
     max-height: 80vh;
-    aspect-ratio: 1;
     background: #111;
     padding: 4px;
     border-radius: 12px;
@@ -69,8 +68,6 @@
   }
 
   .cella {
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -206,7 +203,7 @@
 </div>
 
 <script>
-// 0 = strada, 1 = muro, 2 = giocatore, 3 = arrivo, 4 = oggetto
+// Labirinto: 0=strada, 1=muro, 2=giocatore, 3=arrivo, 4=oggetto
 const lab = [
   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
   [1,2,0,0,1,0,0,0,1,4,0,0,0,1,4,1],
@@ -229,7 +226,7 @@ const lab = [
 let giocatore = {x:1, y:1};
 let oggettiRimasti = 12;
 
-// Emoji e indizi abbinati
+// Emoji e indizi
 const emojiOggetti = ['🏰','⛪','🌊','🎨','🏟️','🌳','🗽','🏛️','🕰️','🎆','💃','🥂'];
 const mappaIndizi = {
   '🏰': "Tra torri dalle forme strane e colori vivaci, camminare insieme è un sogno… 🏰",
@@ -246,7 +243,7 @@ const mappaIndizi = {
   '🥂': "Brindisi sotto le luci della notte, un nuovo anno che inizia con voi… 🥂"
 };
 
-// Genera labirinto emoji
+// Mappa emoji
 let labEmoji = [];
 let index = 0;
 for(let y=0; y<16; y++){
@@ -280,8 +277,21 @@ function disegnaLabirinto(){
       labirinto.appendChild(div);
     }
   }
+  aggiornaDimensioniCelle();
 }
 
+// Funzione per celle quadrate
+function aggiornaDimensioniCelle() {
+  const labWidth = labirinto.clientWidth;
+  const labHeight = labirinto.clientHeight;
+  const size = Math.min(labWidth / 16, labHeight / 16);
+  labirinto.querySelectorAll('.cella').forEach(cella => {
+    cella.style.width = size + 'px';
+    cella.style.height = size + 'px';
+  });
+}
+
+// Movimento giocatore
 document.addEventListener('keydown', (e)=>{
   let nx = giocatore.x;
   let ny = giocatore.y;
@@ -322,6 +332,7 @@ document.addEventListener('keydown', (e)=>{
 });
 
 disegnaLabirinto();
+window.addEventListener('resize', aggiornaDimensioniCelle);
 
 window.onload = () => {
   document.body.classList.add("loaded");
