@@ -91,39 +91,64 @@
     to   { opacity: 1; transform: scale(1.1); }
   }
 
-  
-    /* CANDELE */
-    .candle {
-      position: absolute;
-      bottom: 20px;
-      width: 60px;
-      height: 180px;
-      background: #fff5e6;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(255,200,150,0.6);
-    }
+  /* CANDELE */
+  .candle {
+    position: absolute;
+    bottom: 20px;
+    width: 60px;
+    height: 180px;
+    background: #fff5e6;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255,200,150,0.6);
+  }
 
-    /* Fiamma */
-    .candle::before {
-      content: '';
-      position: absolute;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 28px;
-      height: 40px;
-      background: radial-gradient(circle, rgba(255,220,0,1) 0%, rgba(255,140,0,0.9) 60%, transparent 100%);
-      border-radius: 50%;
-      animation: flicker 0.4s infinite alternate;
-    }
+  .candle::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 40px;
+    background: radial-gradient(circle, rgba(255,220,0,1) 0%, rgba(255,140,0,0.9) 60%, transparent 100%);
+    border-radius: 50%;
+    animation: flicker 0.4s infinite alternate;
+  }
 
-    @keyframes flicker {
-      from { transform: translateX(-50%) scale(1); opacity: 0.9; }
-      to   { transform: translateX(-50%) scale(1.2); opacity: 0.6; }
-    }
+  @keyframes flicker {
+    from { transform: translateX(-50%) scale(1); opacity: 0.9; }
+    to   { transform: translateX(-50%) scale(1.2); opacity: 0.6; }
+  }
 
-    .candle.left { left: 10%; }
-    .candle.right { right: 10%; }
+  .candle.left { left: 10%; }
+  .candle.right { right: 10%; }
+
+  /* ❤️ Cuori veri con CSS */
+  .cuore {
+    position: absolute;
+    width: 14px;   /* più piccolo */
+    height: 12px;  /* più piccolo */
+    background: red;
+    transform: rotate(-45deg);
+    top: -30px;
+    animation: fall linear forwards;
+  }
+  .cuore:before,
+  .cuore:after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 12px;
+    background: red;
+    border-radius: 50%;
+  }
+  .cuore:before { top: -7px; left: 0; }
+  .cuore:after  { left: 7px; top: 0; }
+
+  @keyframes fall {
+    from { transform: translateY(-40px) rotate(-45deg) scale(0.6); opacity: 1; }
+    to   { transform: translateY(110vh) rotate(315deg) scale(0.6); opacity: 0; }
+  }
 </style>
 </head>
 <body>
@@ -150,6 +175,22 @@
   <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
   <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
 </div>
+
+<script>
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'cuore';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+    heart.style.transform = `rotate(-45deg) scale(${0.5 + Math.random() * 0.5})`;
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+  }
+
+  // Cuoricini frequenti
+  setInterval(createHeart, 150);
+</script>
 
 </body>
 </html>
