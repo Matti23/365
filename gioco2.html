@@ -92,6 +92,7 @@
     font-size: clamp(10px, 1.5vw, 20px);
     border-radius: 5px;
     transition: transform 0.2s, box-shadow 0.2s;
+    aspect-ratio: 1 / 1; /* sempre quadrate */
   }
 
   .cella:hover {
@@ -293,17 +294,6 @@ function disegnaLabirinto(){
       labirinto.appendChild(div);
     }
   }
-  aggiornaDimensioniCelle();
-}
-
-function aggiornaDimensioniCelle() {
-  const labWidth = labirinto.clientWidth;
-  const labHeight = labirinto.clientHeight;
-  const size = Math.floor(Math.min(labWidth / 16, labHeight / 16));
-  labirinto.querySelectorAll('.cella').forEach(cella => {
-    cella.style.width = size + 'px';
-    cella.style.height = size + 'px';
-  });
 }
 
 document.addEventListener('keydown', (e)=>{
@@ -346,8 +336,6 @@ document.addEventListener('keydown', (e)=>{
 });
 
 disegnaLabirinto();
-window.addEventListener('resize', aggiornaDimensioniCelle);
-window.addEventListener('load', aggiornaDimensioniCelle);
 
 window.onload = () => {
   document.body.classList.add("loaded");
